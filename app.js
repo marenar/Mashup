@@ -14,4 +14,17 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+var feedly = new FeedlyObj({
+  id: process.env.MYCLIENTID,
+  secret: process.env.MYCLIENTSECRET,
+  protocol: 'https', // optional, feedly recommends http, but I do not.
+  redirect_uri: 'http://localhost:8080/' // set to your own redirect
+});
+
+var url = feedly.createURL();
+
+app.use(function(req, res, next) {
+  console.log('test');
+});
+
 app.listen(port);
