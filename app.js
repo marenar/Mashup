@@ -95,7 +95,7 @@ app.use('/', function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-	var code = req.query.code;
+    var code = req.query.code;
 	feedly.getAccessToken(code, function(err, access_token) {
 		if (err) {
 			console.log(err);
@@ -107,9 +107,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/access', function(req, res) {
+    res.sendFile(__dirname + '/views/layout.html');
 	feedly.get('/profile', function(err, response) {
 		if (err) return res.sendStatus(500);
-		// Response action here
+		//res.json(response);
+        ;
 	})	
 });
 
