@@ -2,6 +2,7 @@
 // https://github.com/bulkan/node-ember-boilerplate/blob/master/frontend/index.html
 
 templates = [
+    'index.hbs'
 ]
 
 /*
@@ -18,7 +19,7 @@ function loadTemplates(templates) {
         $.ajax({
             async: false,
             type: 'GET',
-            url: '/javascripts/templates/' + this,
+            url: '/app/templates/' + this,
             success: function(resp) {
                 tempObj.html(resp);
                 $('body').append(tempObj);

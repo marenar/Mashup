@@ -32,6 +32,55 @@ var feedly = new FeedlyObj({
 });
 
 
+app.use(function(req, res, next) {
+	console.log("middleware");
+	if (feedly.access_token) next();
+	else if (req.session.access_token) {
+		feedly.setAccessToken(req.session.access_token);
+		next();
+	} else if (req.query.code) {
+		next();
+	} else {
+		var url = feedly.createURL();
+		if (req.url === '/') {
+			req.session.myUrl = '/#/home';
+		} else {
+			req.session.myUrl = req.url;
+		}
+		console.log(req.session.myUrl);
+		res.redirect(url);
+	}
+});
+
+app.get('/', function(req, res) {
+	var code = req.query.code;
+	feedly.getAccessToken(code, function(err, access_token) {
+		if (err) {
+			console.log(err);
+		} else {
+			req.session.access_token = access_token;
+			console.log(req.session.myUrl);
+			res.redirect(req.session.myUrl);
+		}
+	})
+});
+/*
+app.get('/other', function(req, res) {
+	res.send('Different result');
+})
+
+app.get('/access', function(req, res) {
+	res.send('You have an access token');
+}) */
+
+var feedly = new FeedlyObj({
+	id: process.env.MYCLIENTID,
+	secret: process.env.MYCLIENTSECRET,
+	protocol: 'http', // optional, feedly recommends http, but I do not.
+	redirect_uri: 'http://localhost:8080/' // set to your own redirect
+});
+
+
 app.use('/', function(req, res, next) {
 	if (feedly.access_token) next();
 	else if (req.session.access_token) {
