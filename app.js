@@ -59,7 +59,8 @@ app.get('/', function(req, res) {
 
 app.get('/access', function(req, res) {
 	feedly.get('/profile', function(err, response) {
-		// Code to render response goes here.
+		if (err) return res.sendStatus(500);
+		// Response action here
 	})	
 });
 
