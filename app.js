@@ -8,6 +8,7 @@ var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 var request = require('request');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var hbs = require('express-handlebars');
 
 var app = express();
 mongoose.connect(mongoURI);
@@ -64,14 +65,6 @@ app.get('/', function(req, res) {
 		}
 	})
 });
-/*
-app.get('/other', function(req, res) {
-	res.send('Different result');
-})
-
-app.get('/access', function(req, res) {
-	res.send('You have an access token');
-}) */
 
 var feedly = new FeedlyObj({
 	id: process.env.MYCLIENTID,
