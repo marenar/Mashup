@@ -76,3 +76,22 @@ a { text-decoration: none; }
     background-color: rgba(0, 0, 0, .9);
     color: white;
 }
+
+.arrow-box {
+    color: rgba(0, 0, 0, .2);
+    font-size: 2.5rem;
+    padding: 0 .5rem;
+}
+
+.arrow-box:hover {
+    color: rgba(0, 0, 0, .4);
+}
+
+.vert-center {
+    display: flex;
+    align-items: center;
+    height: 100% !important;
+}
+
+
+
