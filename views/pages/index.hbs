@@ -9,39 +9,36 @@
 
 
 <script>
-    function upvote (e, title) { vote(e, title, 1); }
-    function downvote (e, title) { vote(e, title, -1); }
-    function vote (e, title, vote) {
-        e.preventDefault();
-
+    function upvote (title, index) { vote(title, index, 1); }
+    function downvote (title, index) { vote(title, index, -1); }
+    function vote (title, index, vote) {
         $.post('/vote', {
             title: title,
             vote: vote
         });
 
-        countElem = $('#' + title + '-count');
-        countElem.html(parseInt(countElem.html()) + inc);
+        console.log(index);
+        countElem = $('#' + index + '-count');
+        countElem.html(parseInt(countElem.html()) + vote);
     }
 </script>
 
 
 <div id="content">
     {{#each posts}}
-    <a href={{url}} class="post">
+    <div class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <div class="arrow-box upvote" onclick="upvote({{title}});" > &#x25B2; </div>
-                <div id="{{title}}-count" class="vote-count">{{count}}</div>
-                <div class="arrow-box downvote" onclick="downvote({{title}});" > &#x25BC; </div>
+                <div class="arrow-box upvote" onclick="upvote('{{title}}', {{@index}});" > &#x25B2; </div>
+                <div id="{{@index}}-count" class="vote-count">{{count}}</div>
+                <div class="arrow-box downvote" onclick="downvote('{{title}}', {{@index}});" > &#x25BC; </div>
             </div>
 
             <div class="post-image"  style="background: url('{{image}}');" ></div>
-            <div class="post-content">
-               <h4 class="post-header">{{ title }}</h4>
-               <!--<h4 class="post-header"><small>{ this.byline }</small></h4>
-               <p class="post-line">{ this.content }</p>-->
+                <div class="post-content">
+                <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>
         </div>
-    </a>
+    </div>
     {{/each}}
 </div>
