@@ -10,22 +10,8 @@
 <!-- TODO: Replace the following dummy data with database data -->
 <script>
 riot.mount('content', {
-    posts: [{
-        header: "Apple shows off iCat, comes only in Champagne",
-        content: "Apple is the very coolest. They sell the coolest widgets!",
-        imgSrc: "http://lorempixel.com/204/104/technics",
-        link: "#",
-        votes: 10
-    },
-    {
-        header: "Microsoft releases Windows 12, Noone buys it",
-        content: "Microsoft has done it again. Like the last even number of times.",
-        imgSrc: "http://lorempixel.com/204/104/sports",
-        link: "#",
-        votes: 5
-    }]
+    posts: {{posts}}
 });
-
 riot.mount('sidebar', {
     categories: ['Tech', 'Politics']
 });
