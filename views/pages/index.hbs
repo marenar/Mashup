@@ -1,10 +1,26 @@
 <!-- Layout with Custom Tags -->
-<sidebar id="sidebar"></sidebar>
+<aside id="sidebar">
+    {{#each cats}}
+    <div a='/{{this}}' class="sidebar-category">
+        <div>{{ this }}</div>
+    </div>
+    {{/cats}}
+</aside>
 
 
 <script>
-    function downvote(text) {
-        console.log(text);
+    function upvote (e, title) { vote(e, title, 1); }
+    function downvote (e, title) { vote(e, title, -1); }
+    function vote (e, title, vote) {
+        e.preventDefault();
+
+        $.post('/vote', {
+            title: title,
+            vote: vote
+        });
+
+        countElem = $('#' + title + '-count');
+        countElem.html(parseInt(countElem.html()) + inc);
     }
 </script>
 
@@ -14,9 +30,9 @@
     <a href={{url}} class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <div class="arrow-box upvote" onclick="upvote('upvote');" > &#x25B2; </div>
-                <div class="vote-count">{{count}}</div>
-                <div class="arrow-box downvote" onclick="downvote('downvote');" > &#x25BC; </div>
+                <div class="arrow-box upvote" onclick="upvote({{title}});" > &#x25B2; </div>
+                <div id="{{title}}-count" class="vote-count">{{count}}</div>
+                <div class="arrow-box downvote" onclick="downvote({{title}});" > &#x25BC; </div>
             </div>
 
             <div class="post-image"  style="background: url('{{image}}');" ></div>
@@ -29,15 +45,3 @@
     </a>
     {{/each}}
 </div>
-
-<!-- Include Tags -->
-<script src="/tags/sidebar.js" type="riot/tag"></script>
-
-
-<!-- Mount Tags -->
-<!-- TODO: Replace the following dummy data with database data -->
-<script>
-riot.mount('sidebar', {
-    categories: ['Tech', 'Politics']
-});
-</script>
