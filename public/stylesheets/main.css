@@ -74,6 +74,8 @@ a {
 
 .sidebar-category {
     padding: .5rem 2rem;
+    color: #333;
+    display: block;
 }
 
 .sidebar-category:hover {
