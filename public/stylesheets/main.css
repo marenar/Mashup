@@ -16,7 +16,7 @@ body {
     height: 100%;
     width: 20%;
     box-sizing: border-box;
-    padding: 2rem;
+    padding: 2rem 0;
     background-color: rgba(0, 0, 0, .1);
 }
 
@@ -58,4 +58,17 @@ body {
 .post-line {
     margin-top: 0;
     color: rgba(0, 0, 0, .7)
+}
+
+.section-header {
+    color: ;
+}
+
+.sidebar-category {
+    padding: .5rem 2rem;
+}
+
+.sidebar-category:hover {
+    background-color: rgba(0, 0, 0, .9);
+    color: white;
 }
