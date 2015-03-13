@@ -23,7 +23,7 @@ routes.mixes = function(req, res, ids, cat, next) {
                 var newPost = {title: post.title || '', content: myContent, author: post.author || '', source: post.origin.title || '', url: post.originId || '', image: image || '', category: cat || ''};
                 Post.update(
                     {title: newPost.title}, 
-                    {$set: newPost, $setOnInsert: {upvoteUsers: [], downvoteUsers: [], count: 0}}, 
+                    {$set: newPost, $setOnInsert: {userVotes: [], count: 0}}, 
                     {upsert: true}, 
                     function(err) {
                         if (err) return res.sendStatus(500);
@@ -64,11 +64,10 @@ routes.update = function (req, res) {
 }
 
 routes.main = function (req, res) {
-    console.log(req.params);
-    if (!req.session.userName) {
+    if (!req.session.userId) {
         res.redirect('/login');
     } else {
-        Post.find(req.params, {"_id": 0}).limit(50).sort('count').exec(function (err, results) {
+        Post.find(req.params, {"_id": 0}).limit(50).sort({'count': -1}).exec(function (err, results) {
             console.log(results);
             res.render('index', {posts: results, cats: categories});
         });
@@ -81,15 +80,15 @@ routes.login = function(req, res) {
 
 routes.createUser = function(req, res) {
     var myUser = {name: req.user.name.givenName};
-    User.update(
+    User.findOneAndUpdate(
         {name: myUser.name}, 
         {$setOnInsert: myUser}, 
         {upsert: true}, 
-        function(err) {
+        function(err, user) {
             if (err) {
                 return res.sendStatus(500);
             } else {
-                req.session.userName = myUser.name
+                req.session.userId = user["_id"];
                 res.redirect('/');
             }
         }
@@ -97,16 +96,14 @@ routes.createUser = function(req, res) {
 }
 
 routes.vote = function (req, res) {
-    /*
-    Post.find({title: req.body.title}, function(err, result) {
-        if result.upvoteUsers
-    }) */
+    console.log(req.session.userId);
+    //Post.find({title: req.body.title}, function(err, result) {
+    //})
     Post.update(
         {title: req.body.title}, 
-        {$inc: {count: req.body.vote}},
-        function(err, result) {
+        {$inc: {count: req.body.vote}, $push: {userVotes: req.session.userId}},
+        function(err) {
             if (err) return res.sendStatus(500);
-            console.log(result);
         }
     );
 }

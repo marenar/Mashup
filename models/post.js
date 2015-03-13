@@ -8,8 +8,7 @@ var schema = new mongoose.Schema ({
     url: {type: String},
     category: {type: String},
     image: {type: String},
-    upvoteUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-    downvoteUsers: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    userVotes: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     count: {type: Number}
 });
 
