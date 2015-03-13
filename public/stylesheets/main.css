@@ -1,8 +1,27 @@
+/* Full DOM Formatting */
+html { height: 100%; }
 body {
     height: 100%;
+    margin: 0;
 }
 
-aside {
+/* Page Structure */
+#sidebar {
+    float: left;
     height: 100%;
+    width: 25%;
+
+    box-sizing: border-box;
+    padding: 2rem;
+
     background-color: darkslategrey;
+}
+
+#content {
+    float: left;
+    width: 75%;
+    height: 100%;
+
+    box-sizing: border-box;
+    padding: 2rem;
 }
