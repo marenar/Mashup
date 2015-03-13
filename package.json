@@ -26,6 +26,8 @@
     "feedly-node": "0.0.1",
     "mongoose": "^3.8.24",
     "morgan": "^1.5.1",
+    "passport": "^0.2.1",
+    "passport-facebook": "^2.0.0",
     "request": "^2.53.0"
   }
 }
