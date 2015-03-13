@@ -5,6 +5,9 @@ body {
     width: 100%;
     margin: 0;
     display: flex;
+
+    /* Set Source Sans Pro as default font */
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 /* Page Structure */
