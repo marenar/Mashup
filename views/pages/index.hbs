@@ -1,21 +1,27 @@
 <!-- Layout with Custom Tags -->
 <aside id="sidebar">
     {{#each cats}}
-    <div a='/{{this}}' class="sidebar-category">
+    <a href='/category/{{this}}' class="sidebar-category">
         <div>{{ this }}</div>
-    </div>
+    </a>
     {{/each}}
 </aside>
 
-
 <script>
+    $(".arrow-box").click(function(e) {
+        e.preventDefault();
+        this.attr("");
+
+    $.post('/vote', {
+        title: title,
+        vote: vote
+    });
+
+    });
+
     function upvote (title, index) { vote(title, index, 1); }
     function downvote (title, index) { vote(title, index, -1); }
     function vote (title, index, vote) {
-        $.post('/vote', {
-            title: title,
-            vote: vote
-        });
 
         console.log(index);
         countElem = $('#' + index + '-count');
@@ -23,18 +29,17 @@
     }
 </script>
 
-
 <div id="content">
     {{#each posts}}
     <div class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <div class="arrow-box upvote" onclick="upvote('{{title}}', {{@index}});" > &#x25B2; </div>
+                <div class="arrow-box upvote" vote=1 title='{{title}}' index={{@index}} > &#x25B2; </div>
                 <div id="{{@index}}-count" class="vote-count">{{count}}</div>
-                <div class="arrow-box downvote" onclick="downvote('{{title}}', {{@index}});" > &#x25BC; </div>
+                <div class="arrow-box downvote" vote=-1 title='{{title}}' index={{@index}} > &#x25BC; </div>
             </div>
 
-            <div class="post-image"  style="background: url('{{image}}');" ></div>
+            <div class="post-image" style="background: url('{{image}}');" ></div>
                 <div class="post-content">
                 <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>
