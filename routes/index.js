@@ -25,7 +25,7 @@ routes.mixes = function(req, res, ids, cat, next) {
                 var post = r.items[j];
                 var contentSource = post.summary || post.content
                 var myContent = contentSource.content || '';
-                var newPost = {title: post.title || '', content: myContent, author: post.author || '', source: post.origin.title || '', url: post.originId || '', category: cat || '', upvoteUsers: [], downvoteUsers: []};
+                var newPost = {title: post.title || '', content: myContent, author: post.author || '', source: post.origin.title || '', url: post.originId || '', category: cat || '', upvoteUsers: [], downvoteUsers: [], count: 0};
                 Post.update(
                     {title: newPost.title}, 
                     {$setOnInsert: newPost}, 
@@ -72,6 +72,10 @@ routes.main = function (req, res) {
     Post.find({}).limit(50).sort('count').exec(function (err, results) {
         res.render('index', {posts: results});
     });
+}
+
+routes.login = function(req, res) {
+    res.render('login');
 }
 
 module.exports = routes;

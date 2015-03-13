@@ -45,7 +45,7 @@ app.use(session({
 // var auth = require('./routes/auth');
 
 app.get('/', routes.main);
-
+app.get('/login', routes.login);
 app.get('/update', routes.update);
 
 app.listen(port);
