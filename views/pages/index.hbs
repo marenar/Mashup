@@ -1,43 +1,43 @@
 <!-- Layout with Custom Tags -->
-<sidebar id="sidebar"></sidebar>
+<aside id="sidebar">
+    {{#each cats}}
+    <a href='/category/{{this}}' class="sidebar-category">
+        <div>{{ this }}</div>
+    </a>
+    {{/each}}
+</aside>
 
 
 <script>
-    function downvote(text) {
-        console.log(text);
+    function upvote (title, index) { vote(title, index, 1); }
+    function downvote (title, index) { vote(title, index, -1); }
+    function vote (title, index, vote) {
+        $.post('/vote', {
+            title: title,
+            vote: vote
+        });
+
+        console.log(index);
+        countElem = $('#' + index + '-count');
+        countElem.html(parseInt(countElem.html()) + vote);
     }
 </script>
 
 
 <div id="content">
     {{#each posts}}
-    <a href={{url}} class="post">
+    <div class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <div class="arrow-box upvote" onclick="upvote('upvote');" > &#x25B2; </div>
-                <div class="vote-count">{{count}}</div>
-                <div class="arrow-box downvote" onclick="downvote('downvote');" > &#x25BC; </div>
+                <div class="arrow-box upvote" onclick="upvote('{{title}}', {{@index}});" > &#x25B2; </div>
+                <div id="{{@index}}-count" class="vote-count">{{count}}</div>
+                <div class="arrow-box downvote" onclick="downvote('{{title}}', {{@index}});" > &#x25BC; </div>
             </div>
-
             <div class="post-image"  style="background: url('{{#if image}}{{image}}{{else}}images/smiley.jpg{{/if}}');" ></div>
-            <div class="post-content">
-               <h4 class="post-header">{{ title }}</h4>
-               <!--<h4 class="post-header"><small>{ this.byline }</small></h4>
-               <p class="post-line">{ this.content }</p>-->
+                <div class="post-content">
+                <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>
         </div>
-    </a>
+    </div>
     {{/each}}
 </div>
-
-<!-- Include Tags -->
-<script src="/tags/sidebar.js" type="riot/tag"></script>
-
-
-<!-- Mount Tags -->
-<!-- TODO: Replace the following dummy data with database data -->
-<script>
-riot.mount('sidebar', {
-    categories: ['Tech', 'Politics']
-});
-</script>

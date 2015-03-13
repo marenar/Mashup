@@ -47,6 +47,7 @@ a {
 
 .post-image {
     margin-right: 1rem;
+    background-size: cover;
     height: 104px;
     width: 204px;
 }

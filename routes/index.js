@@ -64,12 +64,13 @@ routes.update = function (req, res) {
 }
 
 routes.main = function (req, res) {
+    console.log(req.params);
     if (!req.session.userName) {
         res.redirect('/login');
     } else {
-        Post.find({}, {"_id": 0}).limit(50).sort('count').exec(function (err, results) {
+        Post.find(req.params, {"_id": 0}).limit(50).sort('count').exec(function (err, results) {
             console.log(results);
-            res.render('index', {posts: results});
+            res.render('index', {posts: results, cats: categories});
         });
     }
 }
@@ -96,12 +97,16 @@ routes.createUser = function(req, res) {
 }
 
 routes.vote = function (req, res) {
-    var post = req.body.post;
+    /*
+    Post.find({title: req.body.title}, function(err, result) {
+        if result.upvoteUsers
+    }) */
     Post.update(
-        {title: post.title}, 
+        {title: req.body.title}, 
         {$inc: {count: req.body.vote}},
-        function(err) {
+        function(err, result) {
             if (err) return res.sendStatus(500);
+            console.log(result);
         }
     );
 }

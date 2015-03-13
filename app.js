@@ -71,6 +71,7 @@ app.get('/login', routes.login);
 app.get('/update', routes.update);
 app.get('/createUser', routes.createUser);
 app.post('/vote', routes.vote);
+app.get('/category/:category', routes.main);
 
 app.get('/auth/facebook', 
 passport.authenticate('facebook'),
