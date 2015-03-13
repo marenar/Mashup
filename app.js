@@ -7,11 +7,13 @@ var request = require('request');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var hbs = require('express-handlebars');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
 var routes = require('./routes/index.js');
 
 
 // ----- Startup
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 var mongoURI = process.env.MONGOURI || "mongodb://localhost/test";
 
 var app = express();
@@ -38,6 +40,26 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function(user, done) {
+	done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+	done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+	clientID: process.env.FACEBOOK_APP_ID,
+	clientSecret: process.env.FACEBOOK_APP_SECRET,
+	callbackURL: 'http://localhost:3000/auth/facebook/callback'
+}, function(accessToken, refreshToken, profile, done) {
+	process.nextTick(function () {
+		return done(null, profile);
+	});
+}
+));
+
 
 // ----- Routing
 // TODO: Add routes -The index route cannot go into auth file
@@ -47,5 +69,18 @@ app.use(session({
 app.get('/', routes.main);
 app.get('/login', routes.login);
 app.get('/update', routes.update);
+app.get('/createUser', routes.createUser);
+app.post('/vote', routes.vote);
+
+app.get('/auth/facebook', 
+passport.authenticate('facebook'),
+function(req, res){
+});
+
+app.get('/auth/facebook/callback',
+passport.authenticate('facebook', { failureRedirect: '/login' }),
+function(req, res) {
+ 	res.redirect('/createUser');
+});
 
 app.listen(port);
