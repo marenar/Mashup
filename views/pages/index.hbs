@@ -1,17 +1,42 @@
 <!-- Layout with Custom Tags -->
 <sidebar id="sidebar"></sidebar>
-<content id="content"></content>
+
+
+<script>
+    function downvote(text) {
+        console.log(text);
+    }
+</script>
+
+
+<div id="content">
+    {{#each posts}}
+    <a href={{url}} class="post">
+        <div class="vert-center">
+            <div class="arrows-wrapper">
+                <div class="arrow-box upvote" onclick="upvote('upvote');" > &#x25B2; </div>
+                <div class="vote-count">{{count}}</div>
+                <div class="arrow-box downvote" onclick="downvote('downvote');" > &#x25BC; </div>
+            </div>
+
+            <div class="post-image"  style="background: url('{{image}}');" ></div>
+            <div class="post-content">
+               <h4 class="post-header">{{ title }}</h4>
+               <!--<h4 class="post-header"><small>{ this.byline }</small></h4>
+               <p class="post-line">{ this.content }</p>-->
+            </div>
+        </div>
+    </a>
+    {{/each}}
+</div>
 
 <!-- Include Tags -->
 <script src="/tags/sidebar.js" type="riot/tag"></script>
-<script src="/tags/content.js" type="riot/tag"></script>
+
 
 <!-- Mount Tags -->
 <!-- TODO: Replace the following dummy data with database data -->
 <script>
-riot.mount('content', {
-    posts: {{posts}}
-});
 riot.mount('sidebar', {
     categories: ['Tech', 'Politics']
 });
