@@ -91,12 +91,14 @@ a {
 .vert-center {
     display: flex;
     align-items: center;
-    height: 100% !important;
+    height: 100%;
 }
 
-
-
-
+.horz-center {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 .upvote {
     color: darkgreen;
 }
@@ -117,4 +119,32 @@ a {
 .arrows-wrapper {
     padding: 0 .5rem;
     text-align: center;
+}
+
+#login-button {
+    border: 1px solid #111;
+    padding: 1rem;
+    color: #111;
+}
+
+#login-button:hover {
+    background-color: #111;
+    color: white;
+
+}
+
+#website-header {
+    margin-top: 0;
+    font-size: 4em;
+    text-align: center;
+}
+
+#login-box {
+    background: rgba(255, 255, 255, .5);
+    padding: 5em;
+}
+
+#background {
+    background: url("http://lorempixel.com/1600/900/abstract/3");
+    background-size: cover;
 }
