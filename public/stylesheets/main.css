@@ -46,3 +46,16 @@ body {
 .post-content {
     height: 75px;
 }
+
+.post-header {
+    margin-top: 0;
+    margin-bottom: .25rem;
+    color: rgba(0, 0, 0, .9)
+}
+
+
+
+.post-line {
+    margin-top: 0;
+    color: rgba(0, 0, 0, .7)
+}
