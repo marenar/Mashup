@@ -39,7 +39,7 @@
                 <div class="arrow-box downvote" vote=-1 title='{{title}}' index={{@index}} > &#x25BC; </div>
             </div>
 
-            <div class="post-image" style="background: url('{{image}}');" ></div>
+            <div class="post-image"  style="background: url('{{#if image}}{{image}}{{else}}images/smiley.jpg{{/if}}');" ></div>
                 <div class="post-content">
                 <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>

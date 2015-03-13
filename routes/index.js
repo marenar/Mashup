@@ -11,7 +11,7 @@ routes.mixes = function(req, res, ids, cat, next) {
     request(url, function(err, response, body) {
         var r = JSON.parse(body);
          if (err) {
-            res.sendStatus(500);
+            return res.sendStatus(500);
         } else {
             for (var j = 0; j < r.items.length; j++) {
                 var post = r.items[j];
@@ -20,13 +20,13 @@ routes.mixes = function(req, res, ids, cat, next) {
                 if (post.visual) {
                     var image = post.visual.url;
                 }
-                var newPost = {title: post.title || '', content: myContent, author: post.author || '', source: post.origin.title || '', url: post.originId || '', image: image || '', category: cat || '', upvoteUsers: [], downvoteUsers: [], count: 0};
+                var newPost = {title: post.title || '', content: myContent, author: post.author || '', source: post.origin.title || '', url: post.originId || '', image: image || '', category: cat || ''};
                 Post.update(
                     {title: newPost.title}, 
-                    {$setOnInsert: newPost}, 
+                    {$set: newPost, $setOnInsert: {upvoteUsers: [], downvoteUsers: [], count: 0}},
                     {upsert: true}, 
                     function(err) {
-                        if (err) res.sendStatus(500);
+                        if (err) return res.sendStatus(500);
                     }
                 );
             }
@@ -64,12 +64,13 @@ routes.update = function (req, res) {
 }
 
 routes.main = function (req, res) {
+    console.log(req.params);
     if (!req.session.userName) {
         res.redirect('/login');
     } else {
-        Post.find({}, {"_id": 0}).limit(50).sort('count').exec(function (err, results) {
+        Post.find(req.params, {"_id": 0}).limit(50).sort('count').exec(function (err, results) {
             console.log(results);
-            res.render('index', {posts: results});
+            res.render('index', {posts: results, cats: categories});
         });
     }
 }
@@ -86,7 +87,7 @@ routes.createUser = function(req, res) {
         {upsert: true}, 
         function(err) {
             if (err) {
-                res.sendStatus(500);
+                return res.sendStatus(500);
             } else {
                 req.session.userName = myUser.name
                 res.redirect('/');
@@ -96,16 +97,18 @@ routes.createUser = function(req, res) {
 }
 
 routes.vote = function (req, res) {
-    var post = req.body.post;
-
-    /*Post.update(
-        {title: post.title}, 
-        {$setOnInsert: }, 
-        {upsert: true}, 
-        function(err) {
-            if (err) res.sendStatus(500);
+    /*
+    Post.find({title: req.body.title}, function(err, result) {
+        if result.upvoteUsers
+    }) */
+    Post.update(
+        {title: req.body.title},
+        {$inc: {count: req.body.vote}},
+        function(err, result) {
+            if (err) return res.sendStatus(500);
+            console.log(result);
         }
-    ); */
+    );
 }
 
 module.exports = routes;
