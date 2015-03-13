@@ -1,14 +1,30 @@
-<aside id="sidebar">
-    <div class="sidebar-category">> I am a category</div>
-</aside>
+<!-- Layout with Custom Tags -->
+<sidebar id="sidebar"></sidebar>
+<content id="content"></content>
 
-<div id="content">
-    <a href="#" class="post">
-        <img class="post-image" src="http://lorempixel.com/204/104/technics" />
-        <div class="post-content">
-           <h4 class="post-header">Apple shows off iCat, comes only in Champagne</h4>
-           <p class="post-line">Isn't Apple the very coolest. They sell the coolest widgets!</p>
-        </div>
-    </a>
-</div>
+<!-- Include Tags -->
+<script src="/tags/sidebar.js" type="riot/tag"></script>
+<script src="/tags/content.js" type="riot/tag"></script>
 
+<!-- Mount Tags -->
+<!-- TODO: Replace the following dummy data with database data -->
+<script>
+riot.mount('content', {
+    posts: [{
+        header: "Apple shows off iCat, comes only in Champagne",
+        content: "Apple is the very coolest. They sell the coolest widgets!",
+        imgSrc: "http://lorempixel.com/204/104/technics",
+        link: "#"
+    },
+    {
+        header: "Microsoft releases Windows 12, Noone buys it",
+        content: "Microsoft has done it again. Like the last even number of times.",
+        imgSrc: "http://lorempixel.com/204/104/sports",
+        link: "#"
+    }]
+});
+
+riot.mount('sidebar', {
+    categories: ['Tech', 'Politics']
+});
+</script>
