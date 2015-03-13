@@ -10,6 +10,8 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+a { text-decoration: none; }
+
 /* Page Structure */
 #sidebar {
     align-self: flex-start;
@@ -37,6 +39,10 @@ body {
     padding: 1rem;
 
     display: flex;
+}
+
+.post:hover {
+    background-color: rgba(0, 0, 0, .1);
 }
 
 .post-image {
