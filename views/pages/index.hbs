@@ -7,35 +7,40 @@
     {{/each}}
 </aside>
 
-
 <script>
-    function upvote (title, index) { vote(title, index, 1); }
-    function downvote (title, index) { vote(title, index, -1); }
-    function vote (title, index, vote) {
-        $.post('/vote', {
-            title: title,
-            vote: vote
+    $(function() {
+        $(".arrow-box").click(function(e) {
+            e.preventDefault();
+
+            var title = $(this).attr("title");
+            var vote = $(this).attr("vote");
+
+            $.post('/vote', {
+                title: title,
+                vote: vote
+            });
+
+            countElem = $(this).siblings('.vote-count');
+            countElem.html(parseInt(countElem.html()) + parseInt(vote));
+            $(this).siblings('.arrow-box').prop('disabled', true);
+            $(this).prop('disabled', true);
         });
-
-        console.log(index);
-        countElem = $('#' + index + '-count');
-        countElem.html(parseInt(countElem.html()) + vote);
-    }
+    })
 </script>
-
 
 <div id="content">
     {{#each posts}}
     <div class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <div class="arrow-box upvote" onclick="upvote('{{title}}', {{@index}});" > &#x25B2; </div>
+                <button class="arrow-box upvote" vote=1 title='{{title}}'> &#x25B2; </button>
                 <div id="{{@index}}-count" class="vote-count">{{count}}</div>
-                <div class="arrow-box downvote" onclick="downvote('{{title}}', {{@index}});" > &#x25BC; </div>
+                <button class="arrow-box downvote" vote=-1 title='{{title}}'> &#x25BC; </button>
             </div>
+
             <div class="post-image"  style="background: url('{{#if image}}{{image}}{{else}}images/smiley.jpg{{/if}}');" ></div>
-                <div class="post-content">
-                <a href="{{url}}" class="post-header">{{ title }}</a>
+            <div class="post-content">
+            <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>
         </div>
     </div>

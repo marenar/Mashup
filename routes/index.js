@@ -4,6 +4,7 @@ var User = require('../models/user');
 var request = require('request');
 
 var routes = {};
+var categoriesStatic = ['tech', 'business', 'design', 'food', 'marketing', 'news', 'fashion', 'startups', 'photography', 'gaming','baking','do it yourself', 'beauty','comics', 'cars', 'culture', 'seo', 'education', 'science','finance','film', 'travel', 'youtube','vimeo'];
 var categories = ['tech', 'business', 'design', 'food', 'marketing', 'news', 'fashion', 'startups', 'photography', 'gaming','baking','do it yourself', 'beauty','comics', 'cars', 'culture', 'seo', 'education', 'science','finance','film', 'travel', 'youtube','vimeo'];
 
 routes.mixes = function(req, res, ids, cat, next) {
@@ -44,7 +45,7 @@ routes.update = function (req, res) {
         var cat = categories.shift();
         var url = 'http://cloud.feedly.com/v3/search/feeds?query=' + cat;
         request(url, function(err, response, body) {
-            if (err) res.sendStatus(500);
+            if (err) return err;
             r = JSON.parse(body);
             var ids = [];
             for (var i = 0; i < r.results.length; i++) {
@@ -53,7 +54,7 @@ routes.update = function (req, res) {
             console.log(cat);
             routes.mixes(req, res, ids, cat, function () {
                 if (categories.length == 0) {
-                    res.send("Yay");
+                    return "success";
                 } else {
                     helper(req, res, categories);
                 }
@@ -63,19 +64,39 @@ routes.update = function (req, res) {
     helper(req, res, categories);
 }
 
+var voteHelper = function (req, posts) {
+    var formattedPosts = [];
+    for (var i = 0; i < posts.length; i++) {
+        posts[i].hasVoted = 0;
+        var index = posts[i].userVotes.indexOf(req.session.userId);
+        var obj = posts[i].toObject()
+        if (index < 0) {
+            obj.hasVoted = false
+        } else {
+            obj.hasVoted = true
+        }
+        formattedPosts.push(obj);
+    }
+    return formattedPosts
+}
+
 routes.main = function (req, res) {
     if (!req.session.userId) {
         res.redirect('/login');
     } else {
-        Post.find(req.params, {"_id": 0}).limit(50).sort({'count': -1}).exec(function (err, results) {
-            console.log(results);
-            res.render('index', {posts: results, cats: categories});
-        });
+        Post.find(req.params, {"_id": 0}).limit(50)
+            .sort({'count': -1})
+            .exec(function (err, results) {
+                var formattedPosts = voteHelper(req, results);
+                console.log(formattedPosts[0]);
+                res.render('index', {posts: formattedPosts, cats: categoriesStatic});
+            });
     }
 }
 
 routes.login = function(req, res) {
     res.render('login');
+    routes.update(req, res);
 }
 
 routes.createUser = function(req, res) {
@@ -96,16 +117,19 @@ routes.createUser = function(req, res) {
 }
 
 routes.vote = function (req, res) {
-    console.log(req.session.userId);
-    //Post.find({title: req.body.title}, function(err, result) {
-    //})
-    Post.update(
-        {title: req.body.title}, 
-        {$inc: {count: req.body.vote}, $push: {userVotes: req.session.userId}},
-        function(err) {
-            if (err) return res.sendStatus(500);
-        }
-    );
+    if (req.session.userId) {
+        Post.find({title: req.body.title}, function(err, result) {
+            if (result[0].userVotes.indexOf(req.session.userId) < 0) {
+                Post.update(
+                    {title: req.body.title}, 
+                    {$inc: {count: req.body.vote}, $push: {userVotes: req.session.userId}},
+                    function(err) {
+                        if (err) return res.sendStatus(500);
+                    }
+                );
+            }
+        })
+    }
 }
 
 module.exports = routes;
