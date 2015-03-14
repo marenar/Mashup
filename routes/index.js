@@ -85,7 +85,7 @@ routes.main = function (req, res) {
         res.redirect('/login');
     } else {
         Post.find(req.params, {"_id": 0}).limit(50)
-            .sort({'count': -1})
+            .sort({'count': -1, '_id': +1})
             .exec(function (err, results) {
                 var formattedPosts = voteHelper(req, results);
                 console.log(formattedPosts[0]);
