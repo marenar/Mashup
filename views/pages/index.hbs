@@ -1,5 +1,11 @@
 <!-- Layout with Custom Tags -->
 <aside id="sidebar">
+    <strong>
+        <a href='/' class="sidebar-category">
+            <div>HOME</div>
+        </a>
+    </strong>
+
     {{#each cats}}
     <a href='/category/{{this}}' class="sidebar-category">
         <div>{{ this }}</div>
@@ -33,12 +39,18 @@
     <div class="post">
         <div class="vert-center">
             <div class="arrows-wrapper">
-                <button class="arrow-box upvote" vote=1 title='{{title}}'> &#x25B2; </button>
+                <button class="arrow-box upvote" vote=1 title='{{title}}' {{#if hasVoted}}disabled{{/if}}>
+                    &#x25B2;
+                </button>
                 <div id="{{@index}}-count" class="vote-count">{{count}}</div>
-                <button class="arrow-box downvote" vote=-1 title='{{title}}'> &#x25BC; </button>
+                <button class="arrow-box downvote" vote=-1 title='{{title}}' {{#if hasVoted}}disabled{{/if}}>
+                    &#x25BC;
+                </button>
             </div>
 
-            <div class="post-image"  style="background: url('{{#if image}}{{image}}{{else}}images/smiley.jpg{{/if}}');" ></div>
+            <div class="post-image"  style="background: url('{{#if image}}{{image}}{{else}}images/smiley.jpg{{/if}}') no-repeat center center;" >
+
+            </div>
             <div class="post-content">
             <a href="{{url}}" class="post-header">{{ title }}</a>
             </div>
