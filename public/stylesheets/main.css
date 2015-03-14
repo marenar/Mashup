@@ -84,12 +84,16 @@ a {
 }
 
 .arrow-box {
-    opacity: .3;
+    opacity: .7;
     font-size: 2.5rem;
 }
 
+.arrow-box:disabled {
+    opacity: .3;
+}
+
 .arrow-box:hover {
-    opacity: .7;
+    opacity: .9;
 }
 
 .vert-center {
@@ -149,6 +153,9 @@ a {
 }
 
 #background {
-    background: url("http://lorempixel.com/1600/900/abstract/3");
+    background: url("http://lorempixel.com/1600/900/abstract/3") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
 }
